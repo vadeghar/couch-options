@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -37,21 +39,8 @@ public class NseOptionsService {
     @PostConstruct
     public void createPrimaryIndex() {
 
-
-//        Cluster cluster = couchbaseTemplate.getCouchbaseClientFactory().getCluster();
-//        Bucket bucket = couchbaseTemplate.getCouchbaseClientFactory().getBucket();
-//        QueryIndexManager queryIndexManager = cluster.queryIndexes();
-//        try{
-//            queryIndexManager.createPrimaryIndex(bucket.name());
-//
-//            String indexName = "`default`:`bucket-0`.`nse-test`.`OptionChain`";
-//            queryIndexManager.watchIndexes(bucket.name(),
-//                    Collections.singletonList("GSI_" + indexName + "_primary"), Duration.ofSeconds(50));
-//        } catch (IndexExistsException e) {
-//            log.info("INDEX EXIST");
-//        }
-
     }
+
     @TrackExecutionTime
     @Scheduled(fixedDelayString = "PT3M")
     public void saveOptionsChain() {
@@ -60,11 +49,11 @@ public class NseOptionsService {
         log.info("    "+LocalDateTime.now().format(AppUtils.DD_MMM_YYYY_HH_MM_SS)+" ");
         log.info("----------------------------------------------------------------------------------------------------------------------------");
         log.info("Start saveOptionsChain of NseOptionsService");
-//        if(LocalTime.now(ZoneId.of("Asia/Kolkata")).isBefore(LocalTime.parse(AppUtils.START_TIME))
-//                || LocalTime.now(ZoneId.of("Asia/Kolkata")).isAfter(LocalTime.parse(AppUtils.END_TIME ))) {
-//            log.info("Out of hours "+LocalDateTime.now().format(AppUtils.DD_MMM_YYYY_HH_MM_SS));
-//            return;
-//        }
+        if(LocalTime.now(ZoneId.of("Asia/Kolkata")).isBefore(LocalTime.parse(AppUtils.START_TIME))
+                || LocalTime.now(ZoneId.of("Asia/Kolkata")).isAfter(LocalTime.parse(AppUtils.END_TIME ))) {
+            log.info("Out of hours "+LocalDateTime.now().format(AppUtils.DD_MMM_YYYY_HH_MM_SS));
+            return;
+        }
         OptionsData response;
         try{
             response = client.getOptionChainData(Constants.NIFTY);
