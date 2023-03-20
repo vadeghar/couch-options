@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: OPTION-CHAIN
+  jackson:
+    deserialization:
+      ACCEPT_SINGLE_VALUE_AS_ARRAY: true
+  task:
+    scheduling:
+      pool:
+        size: 2
+
+application:
+  couchbase:
+    scope: nse
+  webClient:
+    nse:
+      baseUrl: https://www.nseindia.com
+      apiVersion: /api
