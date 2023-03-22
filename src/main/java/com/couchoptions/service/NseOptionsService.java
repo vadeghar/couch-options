@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -85,6 +86,8 @@ public class NseOptionsService {
         } catch (Exception e) {
             e.printStackTrace();
             log.error("Error in NSE Option Chain Service: "+e.getMessage());
+            log.info("RETRY MANUALLY");
+            saveOptionsChain();
         }
     }
 
@@ -92,6 +95,7 @@ public class NseOptionsService {
         List<Option> options = buildOptions(optionData);
         return OptionChain.builder()
                 .id(UUID.randomUUID())
+                .expiryDate(LocalDate.parse(optionData.getFiltered().getData().get(0).getPE().getExpiryDate(), AppUtils.DD_MMM_YYYY))
                 .symbol(optionData.getFiltered().getData().get(0).getPE().getUnderlying())
                 .underlyingValue(optionData.getRecords().getUnderlyingValue())
                 .realtimeUpdatedTs(LocalDateTime.parse(optionData.getRecords().getTimestamp(), AppUtils.DD_MMM_YYYY_HH_MM_SS))
