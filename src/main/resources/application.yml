@@ -15,6 +15,10 @@ spring:
 application:
   couchbase:
     scope: nse
+    username: Administrator
+    password: Administrator
+    host: 172.17.0.2
+    bucket: bucket-0
   webClient:
     nse:
       baseUrl: https://www.nseindia.com

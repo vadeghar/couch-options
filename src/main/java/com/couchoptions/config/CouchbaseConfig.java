@@ -1,40 +1,44 @@
 package com.couchoptions.config;
 
 import com.couchbase.client.java.query.QueryScanConsistency;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
-import org.springframework.data.couchbase.core.CouchbaseOperations;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
 
     @Value("${application.couchbase.scope}")
     private String scope;
+    @Value("${application.couchbase.host}")
+    private String host;
+    @Value("${application.couchbase.username}")
+    private String username;
+    @Value("${application.couchbase.password}")
+    private String password;
+    @Value("${application.couchbase.bucket}")
+    private String bucket;
 
 
     @Override
     public String getConnectionString() {
-        return "172.17.0.2";
+//        return "172.17.0.2";
+        return host;
     }
 
     @Override
     public String getUserName() {
-        return "Administrator";
+        return username;
     }
 
     @Override
     public String getPassword() {
-        return "Administrator";
+        return password;
     }
 
     @Override
     public String getBucketName() {
-        return "bucket-0";
+        return bucket;
     }
 
     @Override
